@@ -7,13 +7,13 @@ import java.util.ArrayList;
 public class ArticleList {
 
     @SerializedName("articles")
-    private ArrayList<Article> articleList;
+    private ArrayList<Article> articleArrayList;
 
     public ArrayList<Article> getArticleList() {
-        return articleList;
+        return articleArrayList;
     }
 
-    public void setArticleList(ArrayList<Article> articleList) {
-        this.articleList = articleList;
+    public void setArticleList(ArrayList<Article> articleArrayList) {
+        this.articleArrayList = articleArrayList;
     }
 }
