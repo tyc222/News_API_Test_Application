@@ -1,5 +1,6 @@
 package com.example.news_api_test_application.viewer;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.news_api_test_application.R;
+import com.example.news_api_test_application.activity.MainActivity;
 import com.example.news_api_test_application.model.Article;
 import com.example.news_api_test_application.model.Source;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -20,9 +23,11 @@ import java.util.ArrayList;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
 
     private ArrayList<Article> articleList;
+    private Context context;
 
-    public ArticleAdapter (ArrayList<Article> articleList) {
+    public ArticleAdapter (ArrayList<Article> articleList, Context context) {
         this.articleList = articleList;
+        this.context = context;
     }
 
 
@@ -36,7 +41,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(ArticleAdapter.ArticleViewHolder articleViewHolder, int i) {
-    articleViewHolder.empImage.setImageURI(Uri.parse(articleList.get(i).getUrlToImage()));
+    Picasso.with(context).load(articleList.get(i).getUrlToImage()).into(articleViewHolder.empImage);
     articleViewHolder.empPublishedAt.setText(articleList.get(i).getPublishedAt().replace("T", "  ").replace("Z", "  "));
     articleViewHolder.empTitle.setText(articleList.get(i).getTitle());
     articleViewHolder.empDescription.setText(articleList.get(i).getDescription());

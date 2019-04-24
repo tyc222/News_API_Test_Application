@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     // Method to generate a List of Articles using RecycerView with custom adatper
     private void generateNewsList(ArrayList<Article> empArticleList) {
         recyclerView = findViewById(R.id.recycler_view_article_list);
-        adapter = new ArticleAdapter(empArticleList);
+        adapter = new ArticleAdapter(empArticleList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
