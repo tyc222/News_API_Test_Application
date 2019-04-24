@@ -22,4 +22,6 @@ public class Articles {
     private String publishedAt;
     @SerializedName("content")
     private String content;
+
+    
 }
