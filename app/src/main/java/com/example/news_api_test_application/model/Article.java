@@ -4,7 +4,9 @@ import android.net.Uri;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.http.Query;
 
@@ -104,4 +106,5 @@ public class Article {
     public void setContent(String content) {
         this.content = content;
     }
+
 }

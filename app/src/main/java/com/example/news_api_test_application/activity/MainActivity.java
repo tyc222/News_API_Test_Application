@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         GetNewsDataService service = RetrofitInstance.getRetrofitInstance().create(GetNewsDataService.class);
 
         // Call the method with parameter in the interface to get the news data
-        Call<ArticleList> call = service.getArticleData("tw");
+        Call<ArticleList> call = service.getArticleData("tw", "30f23670bbb5441bbd9e77746df08fd4");
 
         // Log the URL called
         Log.wtf("URL Called", call.request().url() + "");
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArticleList> call, Response<ArticleList> response) {
                 generateNewsList(response.body().getArticleList());
+
+
             }
 
             @Override

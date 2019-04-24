@@ -3,6 +3,7 @@ package com.example.news_api_test_application.viewer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.example.news_api_test_application.R;
 import com.example.news_api_test_application.model.Article;
 import com.example.news_api_test_application.model.Source;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
@@ -35,7 +37,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     @Override
     public void onBindViewHolder(ArticleAdapter.ArticleViewHolder articleViewHolder, int i) {
     articleViewHolder.empImage.setImageURI(Uri.parse(articleList.get(i).getUrlToImage()));
-    articleViewHolder.empSourceName.setText(articleList.get(i).getSource().getName());
+    articleViewHolder.empPublishedAt.setText(articleList.get(i).getPublishedAt().replace("T", "  ").replace("Z", "  "));
     articleViewHolder.empTitle.setText(articleList.get(i).getTitle());
     articleViewHolder.empDescription.setText(articleList.get(i).getDescription());
     }
@@ -48,14 +50,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     class ArticleViewHolder extends RecyclerView.ViewHolder{
 
         ImageView empImage;
-        TextView empSourceName, empTitle, empDescription;
+        TextView empPublishedAt, empTitle, empDescription;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);
             empImage = itemView.findViewById(R.id.img_article);
-            empSourceName = itemView.findViewById(R.id.source_name_article);
+            empPublishedAt = itemView.findViewById(R.id.publish_date_article);
             empTitle = itemView.findViewById(R.id.title_article);
             empDescription = itemView.findViewById(R.id.description_article);
         }
     }
+
 }
