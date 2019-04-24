@@ -8,5 +8,5 @@ import retrofit2.http.Query;
 
 public interface GetNewsDataService {
     @GET("top-headlines")
-    Call<ArticleList> getArticleData(@Query("country=au" + "&" + "apiKey=30f23670bbb5441bbd9e77746df08fd4") int countryNo);
+    Call<ArticleList> getArticleData(@Query("country" + "&" + "apiKey=30f23670bbb5441bbd9e77746df08fd4") String countryNo);
 }

@@ -19,7 +19,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     private ArrayList<Article> articleList;
 
-    public ArticleAdapter (ArrayList<Article> articleList, ArrayList<Source> articleSourceList) {
+    public ArticleAdapter (ArrayList<Article> articleList) {
         this.articleList = articleList;
     }
 
