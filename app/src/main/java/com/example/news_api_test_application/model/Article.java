@@ -23,10 +23,9 @@ public class Article {
     private String publishedAt;
     @SerializedName("content")
     private String content;
-    @SerializedName("source")
-    private ArrayList<Source> sourceArrayList;
 
-    public Article (ArrayList<Source> sourceArrayList, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
+
+    public Article (String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
         this.author = author;
         this.title = title;
         this.description = description;
@@ -34,16 +33,9 @@ public class Article {
         this.urlToImage = urlToImage;
         this.publishedAt = publishedAt;
         this.content = content;
-        this.sourceArrayList = sourceArrayList;
     }
 
-    public ArrayList<Source> getSourceArrayList() {
-        return sourceArrayList;
-    }
 
-    public void setSourceArrayList(ArrayList<Source> sourceArrayList) {
-        this.sourceArrayList = sourceArrayList;
-    }
 
     public String getAuthor() {
         return author;
