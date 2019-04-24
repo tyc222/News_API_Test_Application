@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+import retrofit2.http.Query;
+
 
 public class Article {
 
@@ -23,9 +25,12 @@ public class Article {
     private String publishedAt;
     @SerializedName("content")
     private String content;
+    @SerializedName("source")
+    private Source source;
 
 
-    public Article (String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
+
+    public Article (Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
         this.author = author;
         this.title = title;
         this.description = description;
@@ -33,9 +38,16 @@ public class Article {
         this.urlToImage = urlToImage;
         this.publishedAt = publishedAt;
         this.content = content;
+        this.source = source;
     }
 
+    public Source getSource() {
+        return source;
+    }
 
+    public void setSource(Source source) {
+        this.source = source;
+    }
 
     public String getAuthor() {
         return author;

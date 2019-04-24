@@ -19,9 +19,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     private ArrayList<Article> articleList;
 
-    public ArticleAdapter (ArrayList<Article> articleList) {
+    public ArticleAdapter (ArrayList<Article> articleList, ArrayList<Source> articleSourceList) {
         this.articleList = articleList;
     }
+
+
+
 
     public ArticleAdapter.ArticleViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
@@ -32,12 +35,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     @Override
     public void onBindViewHolder(ArticleAdapter.ArticleViewHolder articleViewHolder, int i) {
     articleViewHolder.empImage.setImageURI(Uri.parse(articleList.get(i).getUrlToImage()));
-    articleViewHolder.empSourceName.setText(articleList.get(i).getSourceArrayList());
+    articleViewHolder.empSourceName.setText(articleList.get(i).getSource().getName());
+    articleViewHolder.empTitle.setText(articleList.get(i).getTitle());
+    articleViewHolder.empDescription.setText(articleList.get(i).getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return articleList.size();
     }
 
     class ArticleViewHolder extends RecyclerView.ViewHolder{
