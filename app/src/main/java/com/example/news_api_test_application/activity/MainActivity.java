@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Default title to default news country
+       setTitle("Australian News");
+
         // Initiate FAB
         createFAB();
 
@@ -110,13 +113,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                alertDialog.setTitle("Please Enter Your Country");
-                alertDialog.setMessage("Enter Country Domain %n Eg. tw for Taiwan, hk for Hong Kong");
+                alertDialog.setTitle("Please Enter Your Country Domain");
+                alertDialog.setMessage("Eg. tw for Taiwan, hk for Hong Kong");
                 final EditText editText = new EditText(MainActivity.this);
                 alertDialog.setView(editText);
                 alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        String userInput = editText.getText().toString();
+                        country = userInput;
+                        setTitle(userInput + " News");
+                        fetchNewsList();
                         dialog.dismiss();
                     }
                 });
@@ -128,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 alertDialog.create().show();
 
-                fetchNewsList();
+
                 closeFABMenu();
             }
         });
@@ -136,7 +143,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 country = "au";
-
+                fetchNewsList();
+                setTitle("Australian News");
+                closeFABMenu();
             }
         });
         fabTw.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 country = "tw";
                 fetchNewsList();
+                setTitle("Taiwanese News");
                 closeFABMenu();
             }
         });
@@ -152,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 country = "gb";
                 fetchNewsList();
+                setTitle("British News");
                 closeFABMenu();
             }
         });
@@ -160,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 country = "nz";
                 fetchNewsList();
+                setTitle("New Zealand News");
                 closeFABMenu();
             }
         });
@@ -168,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 country = "us";
                 fetchNewsList();
+                setTitle("American News");
                 closeFABMenu();
             }
         });

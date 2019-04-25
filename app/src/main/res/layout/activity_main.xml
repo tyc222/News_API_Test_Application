@@ -24,7 +24,7 @@
         android:layout_height="45dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="23dp"
-        app:maxImageSize="85dp"
+        app:maxImageSize="84dp"
         android:backgroundTint="@android:color/white"
         app:fabCustomSize="45dp"
         app:srcCompat="@drawable/flag_switch" />
