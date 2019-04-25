@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ArticleAdapter.OnCustomClickListerner, ArticleAdapter.OnCustomLongclickListener {
 
     private ArticleAdapter adapter;
     private RecyclerView recyclerView;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     // Method to generate a List of Articles using RecycerView with custom adatper
     private void generateNewsList(ArrayList<Article> empArticleList) {
         recyclerView = findViewById(R.id.recycler_view_article_list);
-        adapter = new ArticleAdapter(empArticleList, this);
+        adapter = new ArticleAdapter(empArticleList, this, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -206,5 +206,17 @@ public class MainActivity extends AppCompatActivity {
         fabUK.animate().translationY(0);
         fabNZ.animate().translationY(0);
         fabUS.animate().translationY(0);
+    }
+
+    @Override
+    public void onShortClick(int i) {
+        String url = adapter.getArticleList().get(i).getUrl();
+    Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLongClick(int i) {
+        String url = adapter.getArticleList().get(i).getTitle();
+        Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
     }
 }

@@ -24,19 +24,28 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     private ArrayList<Article> articleList;
     private Context context;
+    private OnCustomClickListerner onCustomClickListerner;
+    private OnCustomLongclickListener onCustomLongclickListener;
 
-    public ArticleAdapter (ArrayList<Article> articleList, Context context) {
+    public ArticleAdapter (ArrayList<Article> articleList, Context context, OnCustomClickListerner onCustomClickListerner, OnCustomLongclickListener onCustomLongclickListener) {
         this.articleList = articleList;
         this.context = context;
+        this.onCustomClickListerner = onCustomClickListerner;
+        this.onCustomLongclickListener = onCustomLongclickListener;
     }
 
+    public ArrayList<Article> getArticleList() {
+        return articleList;
+    }
 
-
+    public void setArticleList(ArrayList<Article> articleList) {
+        this.articleList = articleList;
+    }
 
     public ArticleAdapter.ArticleViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
         View view = layoutInflater.inflate(R.layout.article_view_item, viewGroup, false);
-        return new ArticleViewHolder(view);
+        return new ArticleViewHolder(view, onCustomClickListerner, onCustomLongclickListener);
     }
 
     @Override
@@ -45,6 +54,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     articleViewHolder.empPublishedAt.setText(articleList.get(i).getPublishedAt().replace("T", "  ").replace("Z", "  "));
     articleViewHolder.empTitle.setText(articleList.get(i).getTitle());
     articleViewHolder.empDescription.setText(articleList.get(i).getDescription());
+
+
     }
 
     @Override
@@ -52,18 +63,44 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         return articleList.size();
     }
 
-    class ArticleViewHolder extends RecyclerView.ViewHolder{
+    class ArticleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
         ImageView empImage;
         TextView empPublishedAt, empTitle, empDescription;
+        OnCustomClickListerner onCustomClickListerner;
+        OnCustomLongclickListener onCustomLongclickListener;
 
-        public ArticleViewHolder(View itemView) {
+        public ArticleViewHolder(View itemView, OnCustomClickListerner onCustomClickListerner, OnCustomLongclickListener onCustomLongclickListener) {
             super(itemView);
             empImage = itemView.findViewById(R.id.img_article);
             empPublishedAt = itemView.findViewById(R.id.publish_date_article);
             empTitle = itemView.findViewById(R.id.title_article);
             empDescription = itemView.findViewById(R.id.description_article);
+            this.onCustomClickListerner = onCustomClickListerner;
+            this.onCustomLongclickListener = onCustomLongclickListener;
+
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onCustomClickListerner.onShortClick(getAdapterPosition());
+
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            onCustomLongclickListener.onLongClick(getAdapterPosition());
+            return true;
         }
     }
 
+    public interface OnCustomClickListerner{
+        void onShortClick (int i);
+    }
+
+    public interface OnCustomLongclickListener{
+        void onLongClick (int i);
+    }
 }
