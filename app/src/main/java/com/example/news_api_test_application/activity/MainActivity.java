@@ -57,34 +57,49 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 country = "au";
+                fetchNewsList();
+                closeFABMenu();
             }
         });
         fabTw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 country = "tw";
+                fetchNewsList();
+                closeFABMenu();
             }
         });
         fabUK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                country = "uk";
+                country = "gb";
+                fetchNewsList();
+                closeFABMenu();
             }
         });
         fabNZ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 country = "nz";
+                fetchNewsList();
+                closeFABMenu();
             }
         });
         fabUS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 country = "us";
+                fetchNewsList();
+                closeFABMenu();
             }
         });
 
+        fetchNewsList();
 
+    }
+
+    // Method to fetch news
+    private void fetchNewsList (){
         // Create handle for the RetrofitInstance interface
         GetNewsDataService service = RetrofitInstance.getRetrofitInstance().create(GetNewsDataService.class);
 
