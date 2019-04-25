@@ -36,6 +36,55 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initiate FAB
+        createFAB();
+
+        // Default Mews Fetch
+        fetchNewsList();
+
+    }
+
+    // Method to fetch news
+    private void fetchNewsList (){
+        // Create handle for the RetrofitInstance interface
+        GetNewsDataService service = RetrofitInstance.getRetrofitInstance().create(GetNewsDataService.class);
+
+        if (country == null) {
+            country = "au";
+        }
+
+        // Call the method with parameter in the interface to get the news data
+        Call<ArticleList> call = service.getArticleData(country, "30f23670bbb5441bbd9e77746df08fd4");
+
+        // Log the URL called
+        Log.wtf("URL Called", call.request().url() + "");
+
+        call.enqueue(new Callback<ArticleList>() {
+            @Override
+            public void onResponse(Call<ArticleList> call, Response<ArticleList> response) {
+                generateNewsList(response.body().getArticleList());
+            }
+
+            @Override
+            public void onFailure(Call<ArticleList> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Something went wrong... Please try again later", Toast.LENGTH_SHORT).show();
+
+                Log.e("Error", t.getMessage());
+            }
+        });
+    }
+
+    // Method to generate a List of Articles using RecycerView with custom adatper
+    private void generateNewsList(ArrayList<Article> empArticleList) {
+        recyclerView = findViewById(R.id.recycler_view_article_list);
+        adapter = new ArticleAdapter(empArticleList, this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    // Method to create a FAB menu with functionality
+    private void createFAB () {
         // Create a FAB menu
         FloatingActionButton fab = findViewById(R.id.fab);
         fabAu = findViewById(R.id.fabAu);
@@ -93,48 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 closeFABMenu();
             }
         });
-
-        fetchNewsList();
-
-    }
-
-    // Method to fetch news
-    private void fetchNewsList (){
-        // Create handle for the RetrofitInstance interface
-        GetNewsDataService service = RetrofitInstance.getRetrofitInstance().create(GetNewsDataService.class);
-
-        if (country == null) {
-            country = "au";
-        }
-
-        // Call the method with parameter in the interface to get the news data
-        Call<ArticleList> call = service.getArticleData(country, "30f23670bbb5441bbd9e77746df08fd4");
-
-        // Log the URL called
-        Log.wtf("URL Called", call.request().url() + "");
-
-        call.enqueue(new Callback<ArticleList>() {
-            @Override
-            public void onResponse(Call<ArticleList> call, Response<ArticleList> response) {
-                generateNewsList(response.body().getArticleList());
-            }
-
-            @Override
-            public void onFailure(Call<ArticleList> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Something went wrong... Please try again later", Toast.LENGTH_SHORT).show();
-
-                Log.e("Error", t.getMessage());
-            }
-        });
-    }
-
-    // Method to generate a List of Articles using RecycerView with custom adatper
-    private void generateNewsList(ArrayList<Article> empArticleList) {
-        recyclerView = findViewById(R.id.recycler_view_article_list);
-        adapter = new ArticleAdapter(empArticleList, this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
     }
 
     // To open FAB menu
