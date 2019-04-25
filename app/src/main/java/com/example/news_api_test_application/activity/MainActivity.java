@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArticleAdapter adapter;
     private RecyclerView recyclerView;
+    private String country;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +34,12 @@ public class MainActivity extends AppCompatActivity {
         // Create handle for the RetrofitInstance interface
         GetNewsDataService service = RetrofitInstance.getRetrofitInstance().create(GetNewsDataService.class);
 
+        if (country == null) {
+            country = "au";
+        }
+
         // Call the method with parameter in the interface to get the news data
-        Call<ArticleList> call = service.getArticleData("tw", "30f23670bbb5441bbd9e77746df08fd4");
+        Call<ArticleList> call = service.getArticleData(country, "30f23670bbb5441bbd9e77746df08fd4");
 
         // Log the URL called
         Log.wtf("URL Called", call.request().url() + "");
