@@ -1,12 +1,15 @@
 package com.example.news_api_test_application.activity;
 
+import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.news_api_test_application.R;
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ArticleAdapter adapter;
     private RecyclerView recyclerView;
     private String country;
-    FloatingActionButton fabAu, fabTw, fabUK, fabNZ, fabUS;
+    FloatingActionButton fabAu, fabTw, fabUK, fabNZ, fabUS, fabSwitch;
     // Boolean to determine if our FAB is pressed
     private boolean isFABOpen;
 
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         fabUK = findViewById(R.id.fabUk);
         fabNZ = findViewById(R.id.fabNz);
         fabUS = findViewById(R.id.fabUs);
+        fabSwitch = findViewById(R.id.fabSwitch);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,12 +106,37 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        fabSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                alertDialog.setTitle("Please Enter Your Country");
+                alertDialog.setMessage("Enter Country Domain %n Eg. tw for Taiwan, hk for Hong Kong");
+                final EditText editText = new EditText(MainActivity.this);
+                alertDialog.setView(editText);
+                alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.create().show();
+
+                fetchNewsList();
+                closeFABMenu();
+            }
+        });
         fabAu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 country = "au";
-                fetchNewsList();
-                closeFABMenu();
+
             }
         });
         fabTw.setOnClickListener(new View.OnClickListener() {
@@ -147,16 +176,18 @@ public class MainActivity extends AppCompatActivity {
     // To open FAB menu
     private void showFABMenu(){
         isFABOpen =true;
-        fabAu.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
-        fabTw.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
-        fabUK.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
-        fabNZ.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
-        fabUS.animate().translationY(-getResources().getDimension(R.dimen.standard_300));
+        fabSwitch.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+        fabAu.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+        fabTw.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
+        fabUK.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
+        fabNZ.animate().translationY(-getResources().getDimension(R.dimen.standard_300));
+        fabUS.animate().translationY(-getResources().getDimension(R.dimen.standard_360));
     }
 
     // To close FAB menu
     private void closeFABMenu(){
         isFABOpen=false;
+        fabSwitch.animate().translationY(0);
         fabAu.animate().translationY(0);
         fabTw.animate().translationY(0);
         fabUK.animate().translationY(0);
