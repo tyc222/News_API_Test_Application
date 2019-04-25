@@ -24,7 +24,7 @@
         android:layout_height="45dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="23dp"
-        app:maxImageSize="84dp"
+        app:maxImageSize="75dp"
         android:backgroundTint="@android:color/white"
         app:fabCustomSize="45dp"
         app:srcCompat="@drawable/flag_switch" />
@@ -87,7 +87,7 @@
         android:layout_margin="16dp"
         android:elevation="6dp"
         android:src="@drawable/flag_world"
-        app:maxImageSize="95dp"
+        app:maxImageSize="90dp"
         app:pressedTranslationZ="16dp" />
 
 </FrameLayout>
