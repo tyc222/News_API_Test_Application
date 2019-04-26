@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_news_web_content, null);
         WebView webView = view.findViewById(R.id.web_view);
-        
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
