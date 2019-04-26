@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.news_api_test_application.R;
@@ -20,6 +22,7 @@ import com.example.news_api_test_application.model.ArticleList;
 import com.example.news_api_test_application.network.GetNewsDataService;
 import com.example.news_api_test_application.network.RetrofitInstance;
 import com.example.news_api_test_application.viewer.ArticleAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -214,8 +217,9 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
     public void onShortClick(int i) {
         String title = adapter.getArticleList().get(i).getTitle();
         String content = adapter.getArticleList().get(i).getContent();
+        String imageUrl = adapter.getArticleList().get(i).getUrlToImage();
 
-        showDialogAnimation(title, content);
+        showDialogAnimation(title, content, imageUrl);
 
     }
 
@@ -228,11 +232,20 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         startActivity(browserIntent);
     }
 
-    private void showDialogAnimation (String title, String newsContent) {
-        AlertDialog dialog = new AlertDialog.Builder(this).create();
-        dialog.setTitle(title);
-        dialog.setMessage(newsContent);
+    private void showDialogAnimation (String title, String newsContent, String imageUrl) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_news_contents, null);
+        TextView newsTitleView = view.findViewById(R.id.news_title);
+        TextView newsContentView = view.findViewById(R.id.news_content);
+        ImageView newsImageView = view.findViewById(R.id.news_imageView);
+        builder.setView(view);
+        newsTitleView.setText(title);
+        newsContentView.setText(newsContent);
+        Picasso.with(this).load(imageUrl).into(newsImageView);
+
+        final AlertDialog dialog = builder.create();
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
+
         dialog.show();
     }
 }
