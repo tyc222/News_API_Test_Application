@@ -1,6 +1,8 @@
 package com.example.news_api_test_application.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -210,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
     @Override
     public void onShortClick(int i) {
+        showDialogAnimation("rgergerher", "fgewgerhers");
         String url = adapter.getArticleList().get(i).getUrl();
     Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
     }
@@ -217,6 +220,17 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
     @Override
     public void onLongClick(int i) {
         String url = adapter.getArticleList().get(i).getUrl();
-        Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
+        if (!url.startsWith("http://") && !url.startsWith("https://"))
+            url = "http://" + url;
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
+
+    private void showDialogAnimation (String title, String newsContent) {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setTitle(title);
+        dialog.setMessage(newsContent);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
+        dialog.show();
     }
 }
