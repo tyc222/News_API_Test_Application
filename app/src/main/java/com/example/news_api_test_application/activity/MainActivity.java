@@ -2,6 +2,7 @@ package com.example.news_api_test_application.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -11,8 +12,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -215,24 +220,49 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
     @Override
     public void onShortClick(int i) {
-        String title = adapter.getArticleList().get(i).getTitle();
-        String content = adapter.getArticleList().get(i).getContent();
-        String imageUrl = adapter.getArticleList().get(i).getUrlToImage();
+        String url = adapter.getArticleList().get(i).getUrl();
+        if (!url.startsWith("http://") && !url.startsWith("https://"))
+        url = "http://" + url;
 
-        showDialogAnimation(title, content, imageUrl);
-
+        showClickDialogAnimation(url);
     }
 
     @Override
     public void onLongClick(int i) {
-        String url = adapter.getArticleList().get(i).getUrl();
-        if (!url.startsWith("http://") && !url.startsWith("https://"))
-            url = "http://" + url;
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
+        String title = adapter.getArticleList().get(i).getTitle();
+        String content = adapter.getArticleList().get(i).getContent();
+        String imageUrl = adapter.getArticleList().get(i).getUrlToImage();
+
+        showLongClickDialogAnimation(title, content, imageUrl);
     }
 
-    private void showDialogAnimation (String title, String newsContent, String imageUrl) {
+    private void showClickDialogAnimation (String url) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_news_web_content, null);
+        WebView webView = view.findViewById(R.id.web_view);
+        
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return false;
+            }
+        }) ;
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.loadUrl(url);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+
+
+
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
+
+        dialog.show();
+    }
+
+    private void showLongClickDialogAnimation (String title, String newsContent, String imageUrl) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_news_contents, null);
         TextView newsTitleView = view.findViewById(R.id.news_title);
@@ -248,4 +278,12 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
         dialog.show();
     }
+
+
+    // URL Intent
+//    String url = adapter.getArticleList().get(i).getUrl();
+//        if (!url.startsWith("http://") && !url.startsWith("https://"))
+//    url = "http://" + url;
+//    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//    startActivity(browserIntent);
 }

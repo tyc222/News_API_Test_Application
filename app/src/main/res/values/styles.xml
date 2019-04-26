@@ -13,4 +13,5 @@
         <item name="android:windowExitAnimation">@anim/scale_out_animation</item>
     </style>
 
+
 </resources>
