@@ -212,9 +212,11 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
     @Override
     public void onShortClick(int i) {
-        showDialogAnimation("rgergerher", "fgewgerhers");
-        String url = adapter.getArticleList().get(i).getUrl();
-    Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
+        String title = adapter.getArticleList().get(i).getTitle();
+        String content = adapter.getArticleList().get(i).getContent();
+
+        showDialogAnimation(title, content);
+
     }
 
     @Override
