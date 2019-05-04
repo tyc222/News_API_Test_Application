@@ -50,8 +50,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(ArticleAdapter.ArticleViewHolder articleViewHolder, int i) {
-        if (articleList.get(i).getUrlToImage() == ""){
-            articleViewHolder.empImage = null;
+        if (articleList.get(i).getUrlToImage() == null || articleList.get(i).getUrlToImage() == ""){
+            articleViewHolder.empImage.setImageResource(R.mipmap.image_unavailable_picture);
         }
         else {
             Picasso.with(context).load(articleList.get(i).getUrlToImage()).into(articleViewHolder.empImage);

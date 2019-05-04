@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +55,12 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
         // Default title to default news country
        setTitle("Australian News");
+
+       // Set Up PullToRefresh
+        setUpPullToRefresh();
+
+       // Set Up TabLayout
+        setUpTableLayout();
 
         // Initiate FAB
         createFAB();
@@ -99,7 +108,9 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
     // Method to generate a List of Articles using RecycerView with custom adapter
     private void generateNewsList(ArrayList<Article> empArticleList) {
-        recyclerView = findViewById(R.id.recycler_view_article_list);
+        if (recyclerView == null){
+            recyclerView = findViewById(R.id.recycler_view_article_list);
+        }
         recyclerView.getRecycledViewPool().clear();
         adapter = new ArticleAdapter(empArticleList, this, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -226,8 +237,71 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         fabUS.animate().translationY(0);
     }
 
+    // To set up tablayout
     private void setUpTableLayout(){
+        TabLayout categoryTabLayout = findViewById(R.id.tabLayout_tab);
 
+        categoryTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+            onTabPressed(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    // Method for tabs
+    private void onTabPressed (int position) {
+        switch (position) {
+            case 0:
+                category = "";
+                fetchNewsList();
+                break;
+            case 1:
+                category = "technology";
+                fetchNewsList();
+                break;
+            case 2:
+                category = "sports";
+                fetchNewsList();
+                break;
+            case 3:
+                category = "entertainment";
+                fetchNewsList();
+                break;
+            case 4:
+                category = "business";
+                fetchNewsList();
+                break;
+            case 5:
+                category = "science";
+                fetchNewsList();
+                break;
+            case 6:
+                category = "health";
+                fetchNewsList();
+                break;
+    }}
+
+    private void setUpPullToRefresh (){
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.swiperefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchNewsList();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -283,7 +357,13 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         builder.setView(view);
         newsTitleView.setText(title);
         newsContentView.setText(newsContent);
-        Picasso.with(this).load(imageUrl).into(newsImageView);
+        if (imageUrl == null){
+            newsImageView.setImageResource(R.mipmap.image_unavailable_picture);
+        }
+        else {
+            Picasso.with(this).load(imageUrl).into(newsImageView);
+        }
+
 
         final AlertDialog dialog = builder.create();
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
