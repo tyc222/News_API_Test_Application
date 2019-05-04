@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         // Create handle for the RetrofitInstance interface
         GetNewsDataService service = RetrofitInstance.getRetrofitInstance().create(GetNewsDataService.class);
 
+        // Default country
         if (country == null) {
             country = "au";
         }
@@ -83,16 +84,17 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
             @Override
             public void onFailure(Call<ArticleList> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Something went wrong... Please try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Something went wrong... Please check your Internet Connection and try again later", Toast.LENGTH_SHORT).show();
 
                 Log.e("Error", t.getMessage());
             }
         });
     }
 
-    // Method to generate a List of Articles using RecycerView with custom adatper
+    // Method to generate a List of Articles using RecycerView with custom adapter
     private void generateNewsList(ArrayList<Article> empArticleList) {
         recyclerView = findViewById(R.id.recycler_view_article_list);
+        recyclerView.getRecycledViewPool().clear();
         adapter = new ArticleAdapter(empArticleList, this, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
