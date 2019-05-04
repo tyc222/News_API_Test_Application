@@ -50,7 +50,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(ArticleAdapter.ArticleViewHolder articleViewHolder, int i) {
-    Picasso.with(context).load(articleList.get(i).getUrlToImage()).into(articleViewHolder.empImage);
+        if (articleList.get(i).getUrlToImage() == ""){
+            articleViewHolder.empImage = null;
+        }
+        else {
+            Picasso.with(context).load(articleList.get(i).getUrlToImage()).into(articleViewHolder.empImage);
+        }
     articleViewHolder.empPublishedAt.setText(articleList.get(i).getPublishedAt().replace("T", "  ").replace("Z", "  "));
     articleViewHolder.empTitle.setText(articleList.get(i).getTitle());
     articleViewHolder.empDescription.setText(articleList.get(i).getDescription());
