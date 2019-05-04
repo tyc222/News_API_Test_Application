@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
     private ArticleAdapter adapter;
     private RecyclerView recyclerView;
     private String country;
+    private String category;
     FloatingActionButton fabAu, fabTw, fabUK, fabNZ, fabUS, fabSwitch;
     // Boolean to determine if our FAB is pressed
     private boolean isFABOpen;
@@ -70,8 +71,13 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             country = "au";
         }
 
+        // Default category
+        if (category == null) {
+            category = "";
+        }
+
         // Call the method with parameter in the interface to get the news data
-        Call<ArticleList> call = service.getArticleData(country, "30f23670bbb5441bbd9e77746df08fd4");
+        Call<ArticleList> call = service.getArticleData(country, category, "30f23670bbb5441bbd9e77746df08fd4");
 
         // Log the URL called
         Log.wtf("URL Called", call.request().url() + "");
@@ -218,6 +224,10 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         fabUK.animate().translationY(0);
         fabNZ.animate().translationY(0);
         fabUS.animate().translationY(0);
+    }
+
+    private void setUpTableLayout(){
+
     }
 
     @Override
