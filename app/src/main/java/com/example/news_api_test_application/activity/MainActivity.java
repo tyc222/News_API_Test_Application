@@ -4,9 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -44,10 +47,12 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements ArticleAdapter.OnCustomClickListerner, ArticleAdapter.OnCustomLongclickListener {
 
     FloatingActionButton webViewfloatingActionButton;
+    private boolean doubleBackToExitPressedOnce = false;
     private ArticleAdapter adapter;
     private RecyclerView recyclerView;
     private String country;
     private String category;
+    private String search;
     private String currentUrlHolder;
     private String currentTitleHolder;
     FloatingActionButton fabAu, fabTw, fabUK, fabNZ, fabUS, fabSwitch;
@@ -91,8 +96,13 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             category = "";
         }
 
+        // Default search
+        if (search == null) {
+            search = "";
+        }
+
         // Call the method with parameter in the interface to get the news data
-        Call<ArticleList> call = service.getArticleData(country, category, "30f23670bbb5441bbd9e77746df08fd4");
+        Call<ArticleList> call = service.getArticleData(country, category, search,"30f23670bbb5441bbd9e77746df08fd4");
 
         // Log the URL called
         Log.wtf("URL Called", call.request().url() + "");
@@ -324,7 +334,23 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.search_menu:
-                Toast.makeText(this, "Working", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder searchMenuBuilder = new AlertDialog.Builder(this);
+                final EditText enterSearch = new EditText(this);
+                searchMenuBuilder.setView(enterSearch);
+                searchMenuBuilder.setTitle("Enter Your Search");
+                searchMenuBuilder.setCancelable(true);
+                searchMenuBuilder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setTitle("Search Results");
+                        search = enterSearch.getText().toString();
+                        category = "";
+                        fetchNewsList();
+                    }
+                });
+                final AlertDialog dialog = searchMenuBuilder.create();
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
+                dialog.show();
                 return true;
             case R.id.exit_menu:
                 finish();
@@ -413,6 +439,47 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         intent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Article");
         intent.putExtra(Intent.EXTRA_TEXT, currentTitleHolder + "\n" + currentUrlHolder);
         startActivity(Intent.createChooser(intent, "Sharing Article"));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        search = "";
+        fetchNewsList();
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        switch (country){
+            case "tw":
+                setTitle("Taiwanese News");
+                break;
+            case "us":
+                setTitle("American News");
+                break;
+            case "nz":
+                setTitle("New Zealand News");
+                break;
+            case "uk":
+                setTitle("British News");
+                break;
+            case "au":
+                setTitle("Australian News");
+                break;
+                default:
+                    setTitle(country + " News");
+        }
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
 
