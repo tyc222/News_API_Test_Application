@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -40,10 +43,13 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ArticleAdapter.OnCustomClickListerner, ArticleAdapter.OnCustomLongclickListener {
 
+    FloatingActionButton webViewfloatingActionButton;
     private ArticleAdapter adapter;
     private RecyclerView recyclerView;
     private String country;
     private String category;
+    private String currentUrlHolder;
+    private String currentTitleHolder;
     FloatingActionButton fabAu, fabTw, fabUK, fabNZ, fabUS, fabSwitch;
     // Boolean to determine if our FAB is pressed
     private boolean isFABOpen;
@@ -54,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         setContentView(R.layout.activity_main);
 
         // Default title to default news country
-       setTitle("Australian News");
+       setTitle("Taiwanese News");
 
        // Set Up PullToRefresh
         setUpPullToRefresh();
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
         // Default country
         if (country == null) {
-            country = "au";
+            country = "tw";
         }
 
         // Default category
@@ -293,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
                 break;
     }}
 
+    // Set Up Pull To Refresh function
     private void setUpPullToRefresh (){
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.swiperefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -304,12 +311,40 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         });
     }
 
+    // Set up option menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.search_menu:
+                Toast.makeText(this, "Working", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.exit_menu:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     public void onShortClick(int i) {
         String url = adapter.getArticleList().get(i).getUrl();
         if (!url.startsWith("http://") && !url.startsWith("https://"))
         url = "http://" + url;
 
+        // Passing Url to WebView Fab
+        currentUrlHolder = url;
+        // Passing Title to WebView Fab
+        currentTitleHolder = adapter.getArticleList().get(i).getTitle();
+        // Passing Url to open the WebView
         showClickDialogAnimation(url);
     }
 
@@ -369,6 +404,15 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
 
         dialog.show();
+    }
+
+    // WebView FAB method for sharing url
+    public void web_view_floatingActionButton(View view) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Article");
+        intent.putExtra(Intent.EXTRA_TEXT, currentTitleHolder + "\n" + currentUrlHolder);
+        startActivity(Intent.createChooser(intent, "Sharing Article"));
     }
 
 
