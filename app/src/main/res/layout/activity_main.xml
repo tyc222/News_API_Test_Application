@@ -138,17 +138,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_article_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:listitem="@layout/article_view_item" />
-
-        </ScrollView>
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
