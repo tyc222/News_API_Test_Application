@@ -396,19 +396,35 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         }
     }
 
-    @Override
-    public void onShortClick(int i) {
-        String url = adapter.getArticleList().get(i).getUrl();
-        if (!url.startsWith("http://") && !url.startsWith("https://"))
-        url = "http://" + url;
 
-        // Passing Url to WebView Fab
-        currentUrlHolder = url;
-        // Passing Title to WebView Fab
-        currentTitleHolder = adapter.getArticleList().get(i).getTitle();
-        // Passing Url to open the WebView
-        showClickDialogAnimation(url);
-    }
+    @Override
+    public void onShortClick(int i, View v) {
+    switch (v.getId()){
+        case (R.id.img_article):
+            final AlertDialog.Builder enlargeImageBuilder = new AlertDialog.Builder(this);
+            final AlertDialog dialog = enlargeImageBuilder.create();
+            View enlargeImageViewLayout = getLayoutInflater().inflate(R.layout.dialog_news_image_content, null);
+            ImageView enlargeImageView = enlargeImageViewLayout.findViewById(R.id.enlargeImageView);
+            dialog.setView(enlargeImageViewLayout);
+            String urlImage = adapter.getArticleList().get(i).getUrlToImage();
+            Picasso.with(this).load(urlImage).into(enlargeImageView);
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
+            dialog.show();
+
+            break;
+        default:
+            String url = adapter.getArticleList().get(i).getUrl();
+            if (!url.startsWith("http://") && !url.startsWith("https://"))
+                url = "http://" + url;
+
+            // Passing Url to WebView Fab
+            currentUrlHolder = url;
+            // Passing Title to WebView Fab
+            currentTitleHolder = adapter.getArticleList().get(i).getTitle();
+            // Passing Url to open the WebView
+            showClickDialogAnimation(url);
+            break;
+    }    }
 
     @Override
     public void onLongClick(int i) {
@@ -519,6 +535,8 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             }
         }, 2000);
     }
+
+
 
 
     // URL Intent

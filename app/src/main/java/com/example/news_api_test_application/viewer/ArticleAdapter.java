@@ -86,12 +86,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+            empImage.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            onCustomClickListerner.onShortClick(getAdapterPosition());
-
+            onCustomClickListerner.onShortClick(getAdapterPosition(), v);
         }
 
         @Override
@@ -102,7 +102,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     }
 
     public interface OnCustomClickListerner{
-        void onShortClick (int i);
+        void onShortClick (int i, View v);
     }
 
     public interface OnCustomLongclickListener{
