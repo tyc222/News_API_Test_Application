@@ -167,7 +167,11 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
                     public void onClick(DialogInterface dialog, int which) {
                         String userInput = editText.getText().toString();
                         country = userInput;
-                        setTitle(userInput + " News");
+                        if (search != ""){
+                            setTitle(country.toUpperCase() + " - " + search.toUpperCase());
+                        } else {
+                            setTitle(userInput.toUpperCase() + " News");
+                        }
                         fetchNewsList();
                         dialog.dismiss();
                     }
@@ -189,10 +193,10 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             public void onClick(View v) {
                 country = "au";
                 fetchNewsList();
-                if (search == null){
-                    setTitle("Australian News");
+                if (search != ""){
+                    setTitle(country.toUpperCase() + " - " +  search.toUpperCase());
                 } else {
-                    setTitle(search.toUpperCase());
+                    setTitle("Australian News");
                 }
                 closeFABMenu();
             }
@@ -201,10 +205,10 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             @Override
             public void onClick(View v) {
                 country = "tw";
-                if (search == null){
-                    setTitle("Taiwanese News");
+                if (search != ""){
+                    setTitle(country.toUpperCase() + " - " +  search.toUpperCase());
                 } else {
-                    setTitle(search.toUpperCase());
+                    setTitle("Taiwanese News");
                 }
                 fetchNewsList();
                 closeFABMenu();
@@ -214,10 +218,12 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             @Override
             public void onClick(View v) {
                 country = "gb";
-                if (search == null){
-                    setTitle("British News");
+                if (search != ""){
+                    setTitle(country.toUpperCase() + " - " +  search.toUpperCase());
+
                 } else {
-                    setTitle(search.toUpperCase());
+                    setTitle("British News");
+
                 }
                 fetchNewsList();
                 closeFABMenu();
@@ -227,10 +233,12 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             @Override
             public void onClick(View v) {
                 country = "nz";
-                if (search == null){
-                    setTitle("New Zealand News");
+                if (search != ""){
+                    setTitle(country.toUpperCase() + " - " +  search.toUpperCase());
+
                 } else {
-                    setTitle(search.toUpperCase());
+                    setTitle("New Zealand News");
+
                 }
                 fetchNewsList();
                 closeFABMenu();
@@ -240,10 +248,12 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             @Override
             public void onClick(View v) {
                 country = "us";
-                if (search == null){
-                    setTitle("American News");
+                if (search != ""){
+                    setTitle(country.toUpperCase() + " - " +  search.toUpperCase());
+
                 } else {
-                    setTitle(search.toUpperCase());
+                    setTitle("American News");
+
                 }
                 fetchNewsList();
                 closeFABMenu();
@@ -363,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         search = enterSearch.getText().toString();
-                        setTitle(search.toUpperCase());
+                        setTitle(country.toUpperCase() + " - " + search.toUpperCase());
                         fetchNewsList();
                     }
                 });
@@ -469,7 +479,6 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
         this.doubleBackToExitPressedOnce = true;
         search = "";
-        fetchNewsList();
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
         switch (country){
@@ -489,8 +498,10 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
                 setTitle("Australian News");
                 break;
                 default:
-                    setTitle(country + " News");
+                    setTitle(country.toUpperCase() + " News");
         }
+
+        fetchNewsList();
 
         new Handler().postDelayed(new Runnable() {
 
