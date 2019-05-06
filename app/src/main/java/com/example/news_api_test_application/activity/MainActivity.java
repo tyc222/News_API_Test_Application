@@ -46,7 +46,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ArticleAdapter.OnCustomClickListerner, ArticleAdapter.OnCustomLongclickListener {
 
-    FloatingActionButton webViewfloatingActionButton;
     private boolean doubleBackToExitPressedOnce = false;
     private ArticleAdapter adapter;
     private RecyclerView recyclerView;
@@ -470,6 +469,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         startActivity(Intent.createChooser(intent, "Sharing Article"));
     }
 
+    // Back button
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
