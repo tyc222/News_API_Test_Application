@@ -148,6 +148,14 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             public void onClick(View v) {
                 if(!isFABOpen){
                     showFABMenu();
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            closeFABMenu();
+                        }
+                    }, 2500);
+
                 } else {
                     closeFABMenu();
                 }
