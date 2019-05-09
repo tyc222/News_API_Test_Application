@@ -436,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
     }
 
     private void showClickDialogAnimation (String url) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         View view = getLayoutInflater().inflate(R.layout.dialog_news_web_content, null);
         WebView webView = view.findViewById(R.id.web_view);
 
@@ -453,8 +453,6 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         webView.loadUrl(url);
         builder.setView(view);
         final AlertDialog dialog = builder.create();
-
-
 
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
 
