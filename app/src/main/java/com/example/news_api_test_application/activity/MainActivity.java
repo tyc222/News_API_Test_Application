@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         setContentView(R.layout.activity_main);
 
         // Default title to default news country
-       setTitle("Taiwanese News");
+       setTitle("Australian News");
 
        // Set Up PullToRefresh
         setUpPullToRefresh();
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
         // Default country
         if (country == null) {
-            country = "tw";
+            country = "au";
         }
 
         // Default category
