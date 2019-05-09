@@ -436,6 +436,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
     }
 
     private void showClickDialogAnimation (String url) {
+        // Expand Webview to Full Screen with style -> android.R.style.Theme_Black_NoTitleBar_Fullscreen
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         View view = getLayoutInflater().inflate(R.layout.dialog_news_web_content, null);
         WebView webView = view.findViewById(R.id.web_view);
