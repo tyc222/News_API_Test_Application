@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.news_api_test_application.R;
@@ -50,16 +51,20 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(ArticleAdapter.ArticleViewHolder articleViewHolder, int i) {
-        if (articleList.get(i).getUrlToImage() == null || articleList.get(i).getUrlToImage() == ""){
-            articleViewHolder.empImage.setImageResource(R.mipmap.image_unavailable_picture);
+
+        if (articleList.get(i).getDescription() == "" ||articleList.get(i).getDescription() == null) {
+            articleViewHolder.itemView.setVisibility(View.GONE);
+            articleViewHolder.itemView.setLayoutParams(new LinearLayout.LayoutParams(0,0));
         }
-        else {
-            Picasso.with(context).load(articleList.get(i).getUrlToImage()).into(articleViewHolder.empImage);
-        }
+            Picasso.with(context)
+                    .load(articleList.get(i).getUrlToImage())
+                    .placeholder(R.mipmap.image_unavailable_picture)
+                    .error(R.mipmap.image_unavailable_picture)
+                    .into(articleViewHolder.empImage);
+
     articleViewHolder.empPublishedAt.setText(articleList.get(i).getPublishedAt().replace("T", "  ").replace("Z", "  "));
     articleViewHolder.empTitle.setText(articleList.get(i).getTitle());
     articleViewHolder.empDescription.setText(articleList.get(i).getDescription());
-
 
     }
 
