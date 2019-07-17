@@ -60,6 +60,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
                     .load(articleList.get(i).getUrlToImage())
                     .placeholder(R.mipmap.image_unavailable_picture)
                     .error(R.mipmap.image_unavailable_picture)
+                    .fit()
                     .into(articleViewHolder.empImage);
 
     articleViewHolder.empPublishedAt.setText(articleList.get(i).getPublishedAt().replace("T", "  ").replace("Z", "  "));

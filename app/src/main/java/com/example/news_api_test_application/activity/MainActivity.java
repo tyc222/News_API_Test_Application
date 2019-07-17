@@ -408,10 +408,9 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
             ImageViewTouch enlargeImageView = enlargeImageViewLayout.findViewById(R.id.enlargeImageView);
             dialog.setView(enlargeImageViewLayout);
             String urlImage = adapter.getArticleList().get(i).getUrlToImage();
-            Picasso.with(this).load(urlImage).placeholder(R.mipmap.image_unavailable_picture).error(R.mipmap.image_unavailable_picture).into(enlargeImageView);
+            Picasso.with(this).load(urlImage).placeholder(R.mipmap.image_unavailable_picture).error(R.mipmap.image_unavailable_picture).fit().centerInside().into(enlargeImageView);
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
             dialog.show();
-
             break;
         default:
             String url = adapter.getArticleList().get(i).getUrl();
