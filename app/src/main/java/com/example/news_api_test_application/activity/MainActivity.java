@@ -40,6 +40,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         setContentView(R.layout.activity_main);
 
         // Default title to default news country
-       setTitle("Taiwanese News");
+       setTitle("Australian News");
 
        // Set Up PullToRefresh
         setUpPullToRefresh();
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
         // Default country
         if (country == null) {
-            country = "tw";
+            country = "au";
         }
 
         // Default category
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
                         public void run() {
                             closeFABMenu();
                         }
-                    }, 2500);
+                    }, 5000);
 
                 } else {
                     closeFABMenu();
@@ -401,20 +402,19 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
     public void onShortClick(int i, View v) {
     switch (v.getId()){
         case (R.id.img_article):
-            final AlertDialog.Builder enlargeImageBuilder = new AlertDialog.Builder(this);
+            final AlertDialog.Builder enlargeImageBuilder = new AlertDialog.Builder(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
             final AlertDialog dialog = enlargeImageBuilder.create();
             View enlargeImageViewLayout = getLayoutInflater().inflate(R.layout.dialog_news_image_content, null);
-            ImageView enlargeImageView = enlargeImageViewLayout.findViewById(R.id.enlargeImageView);
+            ImageViewTouch enlargeImageView = enlargeImageViewLayout.findViewById(R.id.enlargeImageView);
             dialog.setView(enlargeImageViewLayout);
             String urlImage = adapter.getArticleList().get(i).getUrlToImage();
-            Picasso.with(this).load(urlImage).into(enlargeImageView);
+            Picasso.with(this).load(urlImage).placeholder(R.mipmap.image_unavailable_picture).error(R.mipmap.image_unavailable_picture).fit().centerInside().into(enlargeImageView);
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
             dialog.show();
-
             break;
         default:
             String url = adapter.getArticleList().get(i).getUrl();
-            if (!url.startsWith("http://") && !url.startsWith("https://"))
+             if (!url.startsWith("http://") && !url.startsWith("https://"))
                 url = "http://" + url;
 
             // Passing Url to WebView Fab
@@ -436,7 +436,8 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
     }
 
     private void showClickDialogAnimation (String url) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Expand Webview to Full Screen with style -> android.R.style.Theme_Black_NoTitleBar_Fullscreen
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         View view = getLayoutInflater().inflate(R.layout.dialog_news_web_content, null);
         WebView webView = view.findViewById(R.id.web_view);
 
@@ -453,8 +454,6 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         webView.loadUrl(url);
         builder.setView(view);
         final AlertDialog dialog = builder.create();
-
-
 
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
 
