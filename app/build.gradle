@@ -23,7 +23,7 @@ android {
             variant ->
                 variant.outputs.each {
                     output->
-                        def name = "world_news.apk"
+                        def name = "world_news${variant.versionName}.apk"
                         output.outputFileName = name
                 }
         }

@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -437,10 +438,9 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
 
     private void showClickDialogAnimation (String url) {
         // Expand Webview to Full Screen with style -> android.R.style.Theme_Black_NoTitleBar_Fullscreen
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Translucent_NoTitleBar);
         View view = getLayoutInflater().inflate(R.layout.dialog_news_web_content, null);
-        WebView webView = view.findViewById(R.id.web_view);
-
+        final WebView webView = view.findViewById(R.id.web_view);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -456,6 +456,17 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
         final AlertDialog dialog = builder.create();
 
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
+
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()){
+                    webView.goBack();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         dialog.show();
     }
