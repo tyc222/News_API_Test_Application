@@ -1,8 +1,10 @@
 package com.example.news_api_test_application.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -437,15 +439,23 @@ public class MainActivity extends AppCompatActivity implements ArticleAdapter.On
     }
 
     private void showClickDialogAnimation (String url) {
-        // Expand Webview to Full Screen with style -> android.R.style.Theme_Black_NoTitleBar_Fullscreen
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Translucent_NoTitleBar);
         View view = getLayoutInflater().inflate(R.layout.dialog_news_web_content, null);
+
+        final ProgressBar progressBar = view.findViewById(R.id.webviewProgressBar);
+        progressBar.getIndeterminateDrawable().setColorFilter(0xff444444, PorterDuff.Mode.MULTIPLY);
+        progressBar.setVisibility(View.VISIBLE);
         final WebView webView = view.findViewById(R.id.web_view);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return false;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                progressBar.setVisibility(View.INVISIBLE);
             }
         }) ;
 
